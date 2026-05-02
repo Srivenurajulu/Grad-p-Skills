@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>ICR Phase 3 — Auto-Scaffolding Engine</title>
+  <meta name="description" content="Phase 3: Zero-effort Skill creation through pattern detection and auto-scaffolding of SKILL.md files."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+  <header id="hdr">
+    <div class="hdr-l">
+      <svg class="logo" width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5"/><path d="M8 12 L11 15 L16 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span class="hdr-t">Claude <b>ICR</b></span>
+      <span class="badge">Phase 3 · Auto-Scaffolding</span>
+    </div>
+    <nav class="tabs">
+      <button class="tab on" data-v="chat">💬 Chat</button>
+      <button class="tab" data-v="patterns">🔍 Pattern Engine</button>
+      <button class="tab" data-v="library">📚 Skill Library</button>
+      <button class="tab" data-v="metrics">📊 Rollout Metrics</button>
+    </nav>
+    <div class="hdr-r">
+      <div class="rollout-pill">🟢 100% Pro Rollout</div>
+    </div>
+  </header>
+
+  <!-- ═══ CHAT VIEW ═══ -->
+  <main id="v-chat" class="view on">
+    <aside id="sidebar">
+      <div class="sb-s">
+        <h3 class="sb-h">ICR Engine</h3>
+        <div class="eng"><span class="d on"></span>Intent Analyzer<span class="etag on">Live</span></div>
+        <div class="eng"><span class="d on"></span>Cost Predictor<span class="etag on">Live</span></div>
+        <div class="eng"><span class="d on"></span>Pattern Detector<span class="etag on">Live</span></div>
+        <div class="eng"><span class="d on"></span>Auto-Scaffolder<span class="etag new">New</span></div>
+        <div class="eng"><span class="d on"></span>Dismissal Engine<span class="etag on">Live</span></div>
+        <div class="eng"><span class="d off"></span>Learning Loop<span class="etag off">V4</span></div>
+      </div>
+      <div class="sb-s">
+        <h3 class="sb-h">Pattern Detection</h3>
+        <div id="pattern-sidebar"></div>
+        <p class="sb-hint">3+ similar prompts in 7 days → auto-scaffold</p>
+      </div>
+      <div class="sb-s">
+        <h3 class="sb-h">Skills Library <span class="count" id="skill-count">4</span></h3>
+        <div id="skills-sidebar"></div>
+      </div>
+      <div class="sb-s">
+        <h3 class="sb-h">Routing Log</h3>
+        <div id="rlog"><p class="muted">No routing decisions yet.</p></div>
+      </div>
+    </aside>
+    <section id="chat">
+      <div id="msgs">
+        <div class="msg sys"><div class="mb">
+          <p>🛠️ <strong>ICR Phase 3 — Auto-Scaffolding Engine</strong></p>
+          <p>This prototype demonstrates zero-effort Skill creation. Type repeated prompts and watch the pattern detector trigger auto-scaffolding.</p>
+          <p class="hint">Try sending <em>"Write a PR description for the auth module changes"</em> three times to trigger scaffolding.</p>
+          <p class="hint">Or try: <em>"Draft a meeting summary"</em> · <em>"Write release notes"</em> · <em>"Create a bug report"</em></p>
+        </div></div>
+      </div>
+      <div id="iarea">
+        <div id="ibox">
+          <textarea id="inp" rows="1" placeholder="Type a message — pattern detector watches for repetition"></textarea>
+          <button id="send"><svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M3 10L17 3L10 17L9 11L3 10Z" fill="currentColor"/></svg></button>
+        </div>
+        <div id="ibar" class="hidden"></div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ═══ PATTERN ENGINE VIEW ═══ -->
+  <main id="v-patterns" class="view">
+    <div class="container">
+      <div class="page-hdr">
+        <div><h2>🔍 Pattern Detection Engine</h2><p class="sub">Monitors conversation patterns across sliding 20-conversation window</p></div>
+      </div>
+      <div class="flow-diagram">
+        <div class="flow-step"><div class="flow-icon">📝</div><div class="flow-label">User sends prompt</div></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step"><div class="flow-icon">🧠</div><div class="flow-label">Extract pattern signature</div></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step"><div class="flow-icon">🔍</div><div class="flow-label">Match against window</div></div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step highlight"><div class="flow-icon">⚡</div><div class="flow-label">≥3 matches → Scaffold!</div></div>
+      </div>
+      <h3 class="sec-title">Active Pattern Signatures</h3>
+      <div id="pattern-grid" class="pattern-grid"></div>
+      <h3 class="sec-title">Conversation Window (Last 20)</h3>
+      <div id="conv-window" class="conv-window"></div>
+    </div>
+  </main>
+
+  <!-- ═══ SKILL LIBRARY VIEW ═══ -->
+  <main id="v-library" class="view">
+    <div class="container">
+      <div class="page-hdr">
+        <div><h2>📚 Skill Library</h2><p class="sub">All Skills — including auto-scaffolded ones with source transparency</p></div>
+        <div class="lib-stats">
+          <div class="ls"><span class="lv" id="ls-total">4</span><span class="ll">Total</span></div>
+          <div class="ls"><span class="lv accent" id="ls-manual">4</span><span class="ll">Manual</span></div>
+          <div class="ls"><span class="lv green" id="ls-auto">0</span><span class="ll">Auto-Scaffolded</span></div>
+          <div class="ls"><span class="lv amber" id="ls-saved">0</span><span class="ll">Tokens Saved</span></div>
+        </div>
+      </div>
+      <div id="lib-grid" class="lib-grid"></div>
+    </div>
+  </main>
+
+  <!-- ═══ ROLLOUT METRICS VIEW ═══ -->
+  <main id="v-metrics" class="view">
+    <div class="container">
+      <div class="page-hdr"><div><h2>📊 Phase 3 Rollout Metrics</h2><p class="sub">100% Pro Rollout · Auto-Scaffolding Active · Month 5-6</p></div></div>
+      <div class="kpi-row">
+        <div class="kpi primary"><div class="kpi-l">Skills Created / 1K Users / Week</div><div class="kpi-v">62</div><div class="kpi-t">Target: 50+ <span class="pass">✓ PASS</span></div><div class="kpi-b"><div class="kpi-f" style="width:82%"></div></div></div>
+        <div class="kpi"><div class="kpi-l">Scaffold Acceptance Rate</div><div class="kpi-v">58.3%</div><div class="kpi-t">Target: >50% <span class="pass">✓ PASS</span></div><div class="kpi-b"><div class="kpi-f" style="width:73%"></div></div></div>
+        <div class="kpi"><div class="kpi-l">Time to First Skill</div><div class="kpi-v">4.2 days</div><div class="kpi-t">Target: <7 days <span class="pass">✓ PASS</span></div><div class="kpi-b"><div class="kpi-f green" style="width:60%"></div></div></div>
+        <div class="kpi"><div class="kpi-l">Core Metric Regression</div><div class="kpi-v">None</div><div class="kpi-t">Guardrail: no regression <span class="pass">✓ SAFE</span></div><div class="kpi-b"><div class="kpi-f green" style="width:100%"></div></div></div>
+      </div>
+      <div class="metrics-grid">
+        <div class="m-card">
+          <h4>Scaffold Sources</h4>
+          <div class="bar-chart" id="chart-sources"></div>
+        </div>
+        <div class="m-card">
+          <h4>Skill Creation Method — Before vs After Phase 3</h4>
+          <div class="before-after">
+            <div class="ba-col"><div class="ba-label">Before</div><div class="ba-bar"><div class="ba-fill manual" style="height:100%"><span>100%<br>Manual</span></div></div></div>
+            <div class="ba-arrow">→</div>
+            <div class="ba-col"><div class="ba-label">After</div><div class="ba-bar"><div class="ba-fill auto" style="height:68%"><span>68%<br>Auto</span></div><div class="ba-fill manual" style="height:32%"><span>32%<br>Manual</span></div></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="exit-section">
+        <h3 class="sec-title">Phase 3 Exit Criteria</h3>
+        <div class="exit-grid">
+          <div class="exit ok"><span>✅</span><div><strong>50+ Skills / 1K users / week</strong><p>Current: 62 — exceeds target</p></div></div>
+          <div class="exit ok"><span>✅</span><div><strong>Scaffold acceptance >50%</strong><p>Current: 58.3% — exceeds target</p></div></div>
+          <div class="exit ok"><span>✅</span><div><strong>Time-to-first-Skill <7 days</strong><p>Current: 4.2 days — 40% under target</p></div></div>
+          <div class="exit ok"><span>✅</span><div><strong>No core metric regression</strong><p>All Phase 2 metrics stable or improved</p></div></div>
+        </div>
+        <div class="exit-verdict"><span class="vb pass">✓ ALL GATES PASSED</span><span>Phase 3 complete. Ready for <strong>Phase 4: Intelligence</strong></span></div>
+      </div>
+    </div>
+  </main>
+
+  <!-- ═══ SCAFFOLD MODAL ═══ -->
+  <div id="scaffold-modal" class="modal hidden">
+    <div class="modal-bg"></div>
+    <div class="modal-card">
+      <div class="sc-head">
+        <h3>🛠️ Skill Auto-Scaffolding</h3>
+        <p id="sc-subtitle">I drafted this Skill from your last 3 similar prompts:</p>
+      </div>
+      <div class="sc-editor" id="sc-editor">
+        <div class="sc-code" id="sc-code" contenteditable="false"></div>
+      </div>
+      <div class="sc-meta" id="sc-meta"></div>
+      <div class="sc-btns">
+        <button class="btn-p" id="sc-accept">✓ Accept & Save</button>
+        <button class="btn-o" id="sc-edit">✎ Edit First</button>
+        <button class="btn-g" id="sc-skip">✕ Skip</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

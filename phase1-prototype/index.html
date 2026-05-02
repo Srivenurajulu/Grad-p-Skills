@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ICR Phase 1 — Intelligent Capability Router Prototype</title>
+  <meta name="description" content="Interactive prototype demonstrating Claude's Intelligent Capability Router (ICR) — AI-native meta-routing for Skills, Agents, and Workflows." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Top Navigation -->
+  <header id="app-header">
+    <div class="header-left">
+      <div class="logo-mark">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5"/>
+          <path d="M8 12 L11 15 L16 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <span class="header-title">Claude <span class="header-accent">ICR</span></span>
+      <span class="header-badge">Phase 1 Prototype</span>
+    </div>
+    <div class="header-right">
+      <div id="stats-bar">
+        <div class="stat" id="stat-routed">
+          <span class="stat-label">Routed</span>
+          <span class="stat-value" id="stat-routed-val">0</span>
+        </div>
+        <div class="stat" id="stat-accepted">
+          <span class="stat-label">Accepted</span>
+          <span class="stat-value" id="stat-accepted-val">0</span>
+        </div>
+        <div class="stat" id="stat-tokens-saved">
+          <span class="stat-label">Tokens Saved</span>
+          <span class="stat-value" id="stat-tokens-val">0</span>
+        </div>
+      </div>
+      <button id="btn-demo-scenarios" class="btn-secondary" title="Load demo scenarios">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 4h12M2 8h12M2 12h8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        Demos
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Layout -->
+  <main id="app-main">
+    <!-- Sidebar: ICR Dashboard -->
+    <aside id="sidebar">
+      <div class="sidebar-section">
+        <h3 class="sidebar-heading">ICR Engine Status</h3>
+        <div class="engine-status">
+          <div class="status-row">
+            <span class="status-dot active"></span>
+            <span>Intent Analyzer</span>
+            <span class="status-tag">Active</span>
+          </div>
+          <div class="status-row">
+            <span class="status-dot active"></span>
+            <span>Cost Predictor</span>
+            <span class="status-tag">Active</span>
+          </div>
+          <div class="status-row">
+            <span class="status-dot active"></span>
+            <span>Pattern Detector</span>
+            <span class="status-tag">Active</span>
+          </div>
+          <div class="status-row">
+            <span class="status-dot pending"></span>
+            <span>Learning Loop</span>
+            <span class="status-tag phase-later">V3</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="sidebar-section">
+        <h3 class="sidebar-heading">Your Skills Library</h3>
+        <div id="skills-library">
+          <div class="skill-card-mini" data-skill="weekly-report">
+            <span class="skill-icon">📊</span>
+            <div>
+              <div class="skill-name">Weekly Status Report</div>
+              <div class="skill-desc">Engineering team reports</div>
+            </div>
+          </div>
+          <div class="skill-card-mini" data-skill="code-review">
+            <span class="skill-icon">🔒</span>
+            <div>
+              <div class="skill-name">Security Code Reviewer</div>
+              <div class="skill-desc">OWASP Top 10 analysis</div>
+            </div>
+          </div>
+          <div class="skill-card-mini" data-skill="api-docs">
+            <span class="skill-icon">📝</span>
+            <div>
+              <div class="skill-name">API Doc Writer</div>
+              <div class="skill-desc">OpenAPI documentation</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sidebar-section">
+        <h3 class="sidebar-heading">Pattern Detection</h3>
+        <div id="pattern-tracker">
+          <div class="pattern-item">
+            <div class="pattern-bar-bg"><div class="pattern-bar" style="width: 20%"></div></div>
+            <span class="pattern-label">PR descriptions <span class="pattern-count">1/3</span></span>
+          </div>
+          <div class="pattern-item">
+            <div class="pattern-bar-bg"><div class="pattern-bar" style="width: 0%"></div></div>
+            <span class="pattern-label">Email drafts <span class="pattern-count">0/3</span></span>
+          </div>
+        </div>
+        <p class="sidebar-hint">Skills auto-scaffold after 3 similar prompts</p>
+      </div>
+
+      <div class="sidebar-section">
+        <h3 class="sidebar-heading">Routing Log</h3>
+        <div id="routing-log">
+          <p class="log-empty">No routing decisions yet. Start chatting!</p>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Chat Area -->
+    <section id="chat-area">
+      <div id="chat-messages">
+        <div class="message system-message">
+          <div class="message-content">
+            <p>👋 Welcome to the <strong>Intelligent Capability Router</strong> prototype.</p>
+            <p>Type a message below and the ICR will analyze your intent in real-time, recommend the optimal capability (simple prompt, Skill, Agent, or Workflow), and predict cost/quality/latency tradeoffs.</p>
+            <p class="hint-text">Try: <em>"Write a weekly status report"</em>, <em>"Review this code for security issues"</em>, or <em>"Help me brainstorm ideas"</em></p>
+          </div>
+        </div>
+      </div>
+
+      <div id="chat-input-area">
+        <div id="input-wrapper">
+          <textarea id="chat-input" placeholder="Type a message... (ICR will analyze intent in real-time)" rows="1"></textarea>
+          <button id="btn-send" title="Send message">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 10L17 3L10 17L9 11L3 10Z" fill="currentColor"/></svg>
+          </button>
+        </div>
+        <div id="intent-preview" class="hidden">
+          <div id="intent-preview-content"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Demo Scenarios Panel (overlay) -->
+  <div id="demo-panel" class="hidden">
+    <div class="demo-panel-inner">
+      <div class="demo-header">
+        <h3>Demo Scenarios</h3>
+        <button id="btn-close-demos" class="btn-icon">&times;</button>
+      </div>
+      <p class="demo-description">Click a scenario to simulate the ICR routing decision.</p>
+      <div class="demo-grid">
+        <button class="demo-card" data-demo="high-confidence">
+          <div class="demo-badge confidence-high">Confidence &gt;85%</div>
+          <h4>Inline Nudge</h4>
+          <p>"Write a weekly status report for my engineering team"</p>
+          <span class="demo-tag">Matches: Weekly Report Skill</span>
+        </button>
+        <button class="demo-card" data-demo="medium-confidence">
+          <div class="demo-badge confidence-medium">Confidence 50-85%</div>
+          <h4>Comparison Card</h4>
+          <p>"Analyze this API and write documentation"</p>
+          <span class="demo-tag">Matches: API Doc Writer Skill</span>
+        </button>
+        <button class="demo-card" data-demo="low-confidence">
+          <div class="demo-badge confidence-low">Confidence &lt;50%</div>
+          <h4>Silent Mode</h4>
+          <p>"Help me brainstorm names for my new startup"</p>
+          <span class="demo-tag">No skill match → simple prompt</span>
+        </button>
+        <button class="demo-card" data-demo="pattern-detect">
+          <div class="demo-badge confidence-scaffold">Pattern Detected</div>
+          <h4>Auto-Scaffolding</h4>
+          <p>"Write a PR description for my latest changes"</p>
+          <span class="demo-tag">3rd similar prompt → scaffold trigger</span>
+        </button>
+        <button class="demo-card" data-demo="security-review">
+          <div class="demo-badge confidence-high">Confidence &gt;85%</div>
+          <h4>Code Review</h4>
+          <p>"Review this code for SQL injection and XSS"</p>
+          <span class="demo-tag">Matches: Security Reviewer Skill</span>
+        </button>
+        <button class="demo-card" data-demo="multi-intent">
+          <div class="demo-badge confidence-medium">Multi-Intent</div>
+          <h4>Decomposition</h4>
+          <p>"Review this code, write docs, and create a PR description"</p>
+          <span class="demo-tag">3 sub-intents detected</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Skill Scaffolding Modal -->
+  <div id="scaffold-modal" class="modal hidden">
+    <div class="modal-backdrop"></div>
+    <div class="modal-content scaffold-modal-content">
+      <div class="scaffold-header">
+        <h3>🛠️ Skill Auto-Scaffolding</h3>
+        <p class="scaffold-subtitle">I drafted this Skill from your last 3 similar prompts:</p>
+      </div>
+      <div class="scaffold-body">
+        <div class="skill-preview-code" id="scaffold-code">
+          <pre><code>---
+name: "PR Description Writer"
+description: "Generates PR descriptions from diff summaries
+  and commit messages"
+---
+
+## Instructions
+Write a clear, concise PR description covering:
+1. What changed and why
+2. Key implementation details
+3. Testing approach
+4. Breaking changes (if any)
+
+## Format
+- Use markdown headers
+- Include a one-line summary at the top
+- List affected files/modules
+- Keep to ~300 words</code></pre>
+        </div>
+        <div class="scaffold-meta">
+          <div class="scaffold-meta-row">
+            <span class="meta-label">Sources:</span>
+            <span>Conversations on Apr 12, 19, 29</span>
+          </div>
+          <div class="scaffold-meta-row">
+            <span class="meta-label">Impact:</span>
+            <span>Save ~800 tokens and ~3s per use</span>
+          </div>
+        </div>
+      </div>
+      <div class="scaffold-actions">
+        <button class="btn-primary" id="scaffold-accept">✓ Accept &amp; Save</button>
+        <button class="btn-secondary" id="scaffold-edit">✎ Edit First</button>
+        <button class="btn-ghost" id="scaffold-skip">✕ Skip</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

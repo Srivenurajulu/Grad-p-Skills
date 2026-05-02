@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>ICR Phase 2 — MVP Launch Dashboard</title>
+  <meta name="description" content="Phase 2 MVP of Claude's Intelligent Capability Router — A/B testing, dismissal intelligence, and live recommendation UI."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+  <!-- ═══ TOP HEADER ═══ -->
+  <header id="app-header">
+    <div class="header-left">
+      <div class="logo-mark"><svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5"/><path d="M8 12 L11 15 L16 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      <span class="header-title">Claude <span class="accent">ICR</span></span>
+      <span class="badge phase-badge">Phase 2 · MVP</span>
+    </div>
+    <nav class="header-tabs">
+      <button class="tab active" data-view="chat" id="tab-chat">💬 Chat</button>
+      <button class="tab" data-view="dashboard" id="tab-dashboard">📊 A/B Dashboard</button>
+      <button class="tab" data-view="journal" id="tab-journal">📓 Decision Journal</button>
+    </nav>
+    <div class="header-right">
+      <div class="ab-indicator" id="ab-indicator">
+        <span class="ab-dot treatment"></span>
+        <span>Treatment Group</span>
+      </div>
+      <button id="btn-toggle-ab" class="btn-sm" title="Toggle A/B group">Switch Group</button>
+    </div>
+  </header>
+
+  <!-- ═══ CHAT VIEW ═══ -->
+  <main id="view-chat" class="view active-view">
+    <aside id="sidebar">
+      <div class="sb-section">
+        <h3 class="sb-heading">ICR Engine</h3>
+        <div class="engine-grid">
+          <div class="eng-row"><span class="dot on"></span>Intent Analyzer<span class="eng-tag on">Live</span></div>
+          <div class="eng-row"><span class="dot on"></span>Cost Predictor<span class="eng-tag on">Live</span></div>
+          <div class="eng-row"><span class="dot on"></span>Pattern Detector<span class="eng-tag on">Live</span></div>
+          <div class="eng-row"><span class="dot warn"></span>Dismissal Engine<span class="eng-tag warn">New</span></div>
+          <div class="eng-row"><span class="dot off"></span>Learning Loop<span class="eng-tag off">V3</span></div>
+        </div>
+      </div>
+      <div class="sb-section">
+        <h3 class="sb-heading">Skills Library</h3>
+        <div id="skills-lib">
+          <div class="skill-mini"><span class="sk-icon">📊</span><div><strong>Weekly Status Report</strong><small>Engineering team reports</small></div></div>
+          <div class="skill-mini"><span class="sk-icon">🔒</span><div><strong>Security Reviewer</strong><small>OWASP Top 10 analysis</small></div></div>
+          <div class="skill-mini"><span class="sk-icon">📝</span><div><strong>API Doc Writer</strong><small>OpenAPI documentation</small></div></div>
+          <div class="skill-mini"><span class="sk-icon">📧</span><div><strong>Email Drafter</strong><small>Professional emails</small></div></div>
+        </div>
+      </div>
+      <div class="sb-section">
+        <h3 class="sb-heading">Dismissal Tracker</h3>
+        <div id="dismissal-tracker"></div>
+        <p class="sb-hint">3 dismissals → suppress for 30 days</p>
+      </div>
+      <div class="sb-section">
+        <h3 class="sb-heading">Routing Log</h3>
+        <div id="routing-log"><p class="log-empty">No routing decisions yet.</p></div>
+      </div>
+    </aside>
+    <section id="chat-area">
+      <div id="chat-messages">
+        <div class="msg sys-msg"><div class="msg-body">
+          <p>👋 <strong>ICR Phase 2 — MVP Launch</strong></p>
+          <p>This prototype simulates the live A/B test. You're in the <strong id="group-label">Treatment</strong> group. Switch groups to see the difference.</p>
+          <p class="hint">Try: <em>"Write a weekly status report"</em> · <em>"Review this code for security"</em> · <em>"Help me brainstorm"</em> · <em>"Write a PR description"</em></p>
+        </div></div>
+      </div>
+      <div id="input-area">
+        <div id="input-box">
+          <textarea id="chat-input" rows="1" placeholder="Type a message — ICR analyzes intent in real-time"></textarea>
+          <button id="btn-send"><svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M3 10L17 3L10 17L9 11L3 10Z" fill="currentColor"/></svg></button>
+        </div>
+        <div id="intent-bar" class="hidden"></div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ═══ A/B DASHBOARD VIEW ═══ -->
+  <main id="view-dashboard" class="view">
+    <div class="dash-container">
+      <div class="dash-header">
+        <div>
+          <h2>A/B Test Dashboard</h2>
+          <p class="dash-sub">ICR Treatment vs Control · Week 2 of 4 · 10% Pro rollout</p>
+        </div>
+        <div class="dash-controls">
+          <div class="rollout-badge" id="rollout-badge">🟢 Rollout: 10%</div>
+          <button class="btn-sm" id="btn-expand-rollout">Expand to 25%</button>
+        </div>
+      </div>
+
+      <!-- KPI Cards -->
+      <div class="kpi-grid">
+        <div class="kpi-card primary">
+          <div class="kpi-label">Acceptance Rate</div>
+          <div class="kpi-value" id="kpi-acceptance">38.2%</div>
+          <div class="kpi-target">Target: >35% <span class="kpi-status pass">✓ PASS</span></div>
+          <div class="kpi-bar-bg"><div class="kpi-bar" style="width:76%"></div></div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Annoyance Rate</div>
+          <div class="kpi-value" id="kpi-annoyance">14.7%</div>
+          <div class="kpi-target">Guardrail: <25% <span class="kpi-status pass">✓ SAFE</span></div>
+          <div class="kpi-bar-bg"><div class="kpi-bar green" style="width:59%"></div></div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Skill Creation Rate</div>
+          <div class="kpi-value">62/1K</div>
+          <div class="kpi-target">Target: 50+/1K/week <span class="kpi-status pass">✓ PASS</span></div>
+          <div class="kpi-bar-bg"><div class="kpi-bar" style="width:82%"></div></div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">P95 Latency</div>
+          <div class="kpi-value">87ms</div>
+          <div class="kpi-target">Guardrail: <150ms <span class="kpi-status pass">✓ SAFE</span></div>
+          <div class="kpi-bar-bg"><div class="kpi-bar green" style="width:58%"></div></div>
+        </div>
+      </div>
+
+      <!-- Treatment vs Control -->
+      <div class="comparison-section">
+        <h3>Treatment vs Control — Key Metrics</h3>
+        <div class="comp-table-wrap">
+          <table class="comp-table">
+            <thead><tr><th>Metric</th><th>Control (No ICR)</th><th>Treatment (ICR)</th><th>Δ Delta</th><th>Significance</th></tr></thead>
+            <tbody>
+              <tr><td>Skills Created / User / Week</td><td>0.3</td><td>1.8</td><td class="positive">+500%</td><td><span class="sig high">p < 0.001</span></td></tr>
+              <tr><td>Avg Tokens / Session</td><td>4,200</td><td>2,890</td><td class="positive">-31.2%</td><td><span class="sig high">p < 0.001</span></td></tr>
+              <tr><td>Retry Rate</td><td>19.4%</td><td>8.1%</td><td class="positive">-58.2%</td><td><span class="sig high">p < 0.01</span></td></tr>
+              <tr><td>Feature Adoption (≥2 types)</td><td>14.2%</td><td>37.8%</td><td class="positive">+166%</td><td><span class="sig high">p < 0.001</span></td></tr>
+              <tr><td>7-Day Retention</td><td>68.3%</td><td>79.1%</td><td class="positive">+15.8%</td><td><span class="sig med">p < 0.05</span></td></tr>
+              <tr><td>NPS Score</td><td>42</td><td>56</td><td class="positive">+14 pts</td><td><span class="sig med">p < 0.05</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Charts Row -->
+      <div class="charts-grid">
+        <div class="chart-card">
+          <h4>Acceptance Rate — Daily Trend</h4>
+          <canvas id="chart-acceptance" height="200"></canvas>
+        </div>
+        <div class="chart-card">
+          <h4>Routing Confidence Distribution</h4>
+          <canvas id="chart-confidence" height="200"></canvas>
+        </div>
+      </div>
+
+      <!-- Dismissal Intelligence -->
+      <div class="dismissal-section">
+        <h3>Dismissal Intelligence</h3>
+        <div class="dismissal-grid">
+          <div class="dismiss-card">
+            <div class="dismiss-label">Inline Nudge Dismissals</div>
+            <div class="dismiss-value">12.3%</div>
+            <div class="dismiss-bar-bg"><div class="dismiss-bar" style="width:49%"></div></div>
+            <small>Below 25% guardrail ✓</small>
+          </div>
+          <div class="dismiss-card">
+            <div class="dismiss-label">Comparison Card Dismissals</div>
+            <div class="dismiss-value">18.1%</div>
+            <div class="dismiss-bar-bg"><div class="dismiss-bar amber" style="width:72%"></div></div>
+            <small>Below 25% guardrail ✓</small>
+          </div>
+          <div class="dismiss-card">
+            <div class="dismiss-label">Users Auto-Suppressed</div>
+            <div class="dismiss-value">4.2%</div>
+            <div class="dismiss-bar-bg"><div class="dismiss-bar green" style="width:17%"></div></div>
+            <small>3+ dismissals triggered suppression</small>
+          </div>
+          <div class="dismiss-card">
+            <div class="dismiss-label">Suppression Recovery</div>
+            <div class="dismiss-value">67%</div>
+            <div class="dismiss-bar-bg"><div class="dismiss-bar" style="width:67%"></div></div>
+            <small>Re-engaged after 30-day cooldown</small>
+          </div>
+        </div>
+      </div>
+
+      <!-- Rollout Decision -->
+      <div class="rollout-section">
+        <h3>Rollout Decision Gate</h3>
+        <div class="gate-grid">
+          <div class="gate-item pass"><span class="gate-icon">✅</span><div><strong>Acceptance Rate >35%</strong><p>Current: 38.2% — Exceeds target</p></div></div>
+          <div class="gate-item pass"><span class="gate-icon">✅</span><div><strong>Annoyance Rate <25%</strong><p>Current: 14.7% — Well within guardrail</p></div></div>
+          <div class="gate-item pass"><span class="gate-icon">✅</span><div><strong>Statistical Significance</strong><p>5 of 6 metrics at p < 0.05</p></div></div>
+          <div class="gate-item pass"><span class="gate-icon">✅</span><div><strong>Latency <150ms P95</strong><p>Current: 87ms — 42% headroom</p></div></div>
+        </div>
+        <div class="gate-verdict">
+          <span class="verdict-badge pass">✓ ALL GATES PASSED</span>
+          <span>Recommendation: <strong>Expand rollout to 25%</strong></span>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- ═══ DECISION JOURNAL VIEW ═══ -->
+  <main id="view-journal" class="view">
+    <div class="journal-container">
+      <div class="journal-header">
+        <div>
+          <h2>📓 Decision Journal</h2>
+          <p class="dash-sub">Every ICR routing decision with outcomes — transparent & auditable</p>
+        </div>
+        <div class="journal-summary">
+          <div class="js-stat"><span class="js-val" id="j-total">0</span><span class="js-label">Total Decisions</span></div>
+          <div class="js-stat"><span class="js-val accent" id="j-accepted">0</span><span class="js-label">Accepted</span></div>
+          <div class="js-stat"><span class="js-val amber" id="j-dismissed">0</span><span class="js-label">Dismissed</span></div>
+          <div class="js-stat"><span class="js-val green" id="j-saved">0</span><span class="js-label">Tokens Saved</span></div>
+        </div>
+      </div>
+      <div id="journal-entries">
+        <p class="log-empty">No decisions recorded yet. Start chatting to populate the journal.</p>
+      </div>
+    </div>
+  </main>
+
+  <!-- ═══ SCAFFOLD MODAL ═══ -->
+  <div id="scaffold-modal" class="modal hidden">
+    <div class="modal-bg"></div>
+    <div class="modal-body scaffold-body">
+      <div class="scaffold-head">
+        <h3>🛠️ Skill Auto-Scaffolding</h3>
+        <p>I drafted this Skill from your last 3 similar prompts:</p>
+      </div>
+      <div class="scaffold-code" id="scaffold-code-block">
+        <pre><code>---
+name: "PR Description Writer"
+description: "Generates PR descriptions from
+  diff summaries and commit messages"
+---
+
+## Instructions
+Write a clear, concise PR description:
+1. What changed and why
+2. Key implementation details
+3. Testing approach
+4. Breaking changes (if any)
+
+## Format
+- Markdown headers per section
+- One-line summary at top
+- List affected files/modules
+- ~300 words max</code></pre>
+      </div>
+      <div class="scaffold-meta">
+        <span><strong>Sources:</strong> Conversations on Apr 15, 22, 29</span>
+        <span><strong>Impact:</strong> Save ~800 tokens & ~3s per use</span>
+      </div>
+      <div class="scaffold-btns">
+        <button class="btn-primary" id="sc-accept">✓ Accept & Save</button>
+        <button class="btn-outline" id="sc-edit">✎ Edit First</button>
+        <button class="btn-ghost" id="sc-skip">✕ Skip</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>ICR Phase 5 — Platform & Ecosystem</title>
+  <meta name="description" content="Phase 5: Workflow Composer, Programmatic API, Skill Ecosystem, Token Budget Mode, and Decision Journal."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+  <header id="hdr">
+    <div class="hdr-l">
+      <svg class="logo" width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5"/><path d="M8 12 L11 15 L16 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span class="hdr-t">Claude <b>ICR</b></span>
+      <span class="badge">Phase 5 · Platform</span>
+    </div>
+    <nav class="tabs">
+      <button class="tab on" data-v="workflows">🔗 Workflows</button>
+      <button class="tab" data-v="api">⚡ API Console</button>
+      <button class="tab" data-v="ecosystem">🌐 Ecosystem</button>
+      <button class="tab" data-v="journal">📓 Decision Journal</button>
+    </nav>
+    <div class="hdr-r">
+      <div class="team-badge">Platform Tier</div>
+    </div>
+  </header>
+
+  <!-- ═══ WORKFLOW COMPOSER VIEW ═══ -->
+  <main id="v-workflows" class="view on">
+    <div class="container">
+      <div class="page-hdr">
+        <div>
+          <h1>🔗 Workflow Composer</h1>
+          <p class="sub">Chain Skills into multi-step automated pipelines — detected from your usage patterns</p>
+        </div>
+        <button class="btn-p" id="new-workflow">+ New Workflow</button>
+      </div>
+
+      <!-- Suggested Workflow Banner -->
+      <div class="suggest-banner" id="suggest-banner">
+        <div class="sb-icon">💡</div>
+        <div class="sb-body">
+          <strong>Suggested Workflow Detected</strong>
+          <p>You use <span class="highlight">"Security Reviewer"</span> and <span class="highlight">"API Doc Writer"</span> back-to-back after every PR. Chain them into a single Workflow?</p>
+        </div>
+        <div class="sb-actions">
+          <button class="btn-p" id="accept-suggestion">Create Workflow</button>
+          <button class="btn-g" id="dismiss-suggestion">Dismiss</button>
+        </div>
+      </div>
+
+      <!-- Workflow Canvas -->
+      <div class="wf-section">
+        <h3 class="sec-title">Active Workflows <span class="count">2</span></h3>
+        <div class="wf-grid">
+
+          <!-- Workflow 1: Post-PR Review -->
+          <div class="wf-card">
+            <div class="wf-card-hdr">
+              <div>
+                <h4>Post-PR Review Pipeline</h4>
+                <span class="wf-meta">3 steps · Avg 18s · Last run: 2h ago</span>
+              </div>
+              <div class="wf-status live">Live</div>
+            </div>
+            <div class="wf-steps">
+              <div class="wf-step">
+                <div class="wf-step-icon">🔒</div>
+                <div class="wf-step-info">
+                  <strong>Security Reviewer</strong>
+                  <small>OWASP Top 10 scan</small>
+                </div>
+                <div class="wf-step-tok">~1,100 tok</div>
+              </div>
+              <div class="wf-arrow">
+                <svg width="16" height="16" viewBox="0 0 16 16"><path d="M8 2v12M4 10l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+              </div>
+              <div class="wf-step">
+                <div class="wf-step-icon">📝</div>
+                <div class="wf-step-info">
+                  <strong>API Doc Writer</strong>
+                  <small>Generate endpoint docs</small>
+                </div>
+                <div class="wf-step-tok">~1,400 tok</div>
+              </div>
+              <div class="wf-arrow">
+                <svg width="16" height="16" viewBox="0 0 16 16"><path d="M8 2v12M4 10l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+              </div>
+              <div class="wf-step">
+                <div class="wf-step-icon">🔀</div>
+                <div class="wf-step-info">
+                  <strong>PR Description Writer</strong>
+                  <small>Draft from diff summary</small>
+                </div>
+                <div class="wf-step-tok">~700 tok</div>
+              </div>
+            </div>
+            <div class="wf-card-foot">
+              <div class="wf-savings">
+                <span class="green">▼ 3,100 tokens saved</span> vs running each separately
+              </div>
+              <div class="wf-actions">
+                <button class="btn-s wf-run-btn" data-wf="pr-review">▶ Run</button>
+                <button class="btn-g">Edit</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Workflow 2: Weekly Reporting -->
+          <div class="wf-card">
+            <div class="wf-card-hdr">
+              <div>
+                <h4>Weekly Team Reporting</h4>
+                <span class="wf-meta">2 steps · Avg 14s · Last run: 5d ago</span>
+              </div>
+              <div class="wf-status live">Live</div>
+            </div>
+            <div class="wf-steps">
+              <div class="wf-step">
+                <div class="wf-step-icon">📊</div>
+                <div class="wf-step-info">
+                  <strong>Weekly Status Report</strong>
+                  <small>Sprint progress + blockers</small>
+                </div>
+                <div class="wf-step-tok">~900 tok</div>
+              </div>
+              <div class="wf-arrow">
+                <svg width="16" height="16" viewBox="0 0 16 16"><path d="M8 2v12M4 10l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
+              </div>
+              <div class="wf-step">
+                <div class="wf-step-icon">📧</div>
+                <div class="wf-step-info">
+                  <strong>Email Drafter</strong>
+                  <small>Format for stakeholders</small>
+                </div>
+                <div class="wf-step-tok">~600 tok</div>
+              </div>
+            </div>
+            <div class="wf-card-foot">
+              <div class="wf-savings">
+                <span class="green">▼ 2,700 tokens saved</span> vs running each separately
+              </div>
+              <div class="wf-actions">
+                <button class="btn-s wf-run-btn" data-wf="weekly">▶ Run</button>
+                <button class="btn-g">Edit</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Workflow Execution Log -->
+      <div class="wf-section">
+        <h3 class="sec-title">Execution Log</h3>
+        <div class="exec-log" id="exec-log">
+          <div class="exec-empty">No workflow executions yet. Click <strong>▶ Run</strong> on a workflow to begin.</div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- ═══ API CONSOLE VIEW ═══ -->
+  <main id="v-api" class="view">
+    <div class="container">
+      <div class="page-hdr">
+        <div>
+          <h2>⚡ Programmatic ICR API</h2>
+          <p class="sub">Integrate ICR intelligence into your own tools — $0.50/1K decisions</p>
+        </div>
+        <div class="api-badge">v1.0 · Rate Limit: 100 req/min</div>
+      </div>
+
+      <div class="api-grid">
+        <!-- Endpoint Cards -->
+        <div class="api-endpoints">
+          <h3 class="sec-title">Endpoints</h3>
+          <div class="ep-card active" data-ep="route">
+            <div class="ep-method">POST</div>
+            <div class="ep-path">/v1/icr/route</div>
+            <div class="ep-desc">Get capability recommendation for an intent</div>
+          </div>
+          <div class="ep-card" data-ep="predict">
+            <div class="ep-method get">GET</div>
+            <div class="ep-path">/v1/icr/predict</div>
+            <div class="ep-desc">Cost / quality / latency estimates per path</div>
+          </div>
+          <div class="ep-card" data-ep="scaffold">
+            <div class="ep-method post">POST</div>
+            <div class="ep-path">/v1/icr/scaffold</div>
+            <div class="ep-desc">Generate a SKILL.md from pattern data</div>
+          </div>
+          <div class="ep-card" data-ep="health">
+            <div class="ep-method get">GET</div>
+            <div class="ep-path">/v1/icr/skills/health</div>
+            <div class="ep-desc">Run health audit on a skill library</div>
+          </div>
+        </div>
+
+        <!-- Request/Response Panel -->
+        <div class="api-panel">
+          <div class="panel-tabs">
+            <button class="ptab on">Request</button>
+            <button class="ptab">Response</button>
+          </div>
+          <div class="code-block" id="req-block">
+            <div class="code-hdr">
+              <span class="code-lang">curl</span>
+              <button class="btn-copy" id="copy-req">Copy</button>
+            </div>
+            <pre id="req-code"><code>curl -X POST https://api.anthropic.com/v1/icr/route \
+  -H "Authorization: Bearer sk-ant-..." \
+  -H "Content-Type: application/json" \
+  -d '{
+    "intent": "Review this code for security vulnerabilities",
+    "user_skills": ["security-reviewer", "api-doc-writer"],
+    "context": {
+      "platform": "claude-code",
+      "recent_patterns": 3
+    }
+  }'</code></pre>
+          </div>
+          <div class="code-block" id="res-block" style="display:none">
+            <div class="code-hdr">
+              <span class="code-lang">JSON Response</span>
+              <span class="res-status">200 OK · 42ms</span>
+            </div>
+            <pre id="res-code"><code>{
+  "recommendation": {
+    "capability": "skill",
+    "skill_id": "security-reviewer",
+    "confidence": 92,
+    "reasoning": "High match on security keywords + user history"
+  },
+  "alternatives": [
+    {
+      "capability": "simple_prompt",
+      "confidence": 45,
+      "estimated_tokens": 2100
+    }
+  ],
+  "predictions": {
+    "recommended": {
+      "tokens": 1100,
+      "quality_score": 88,
+      "latency_ms": 9200,
+      "consistency": "high"
+    },
+    "simple_prompt": {
+      "tokens": 2100,
+      "quality_score": 62,
+      "latency_ms": 12400,
+      "consistency": "low"
+    }
+  },
+  "meta": {
+    "router_version": "2.1",
+    "model": "haiku-4.5",
+    "decision_id": "dec_8f3a9c2b"
+  }
+}</code></pre>
+          </div>
+          <button class="btn-p api-send" id="api-send">▶ Send Request</button>
+          <div class="api-stats" id="api-stats" style="display:none">
+            <div class="as-item"><span class="as-l">Latency</span><span class="as-v">42ms</span></div>
+            <div class="as-item"><span class="as-l">Router Tokens</span><span class="as-v">48</span></div>
+            <div class="as-item"><span class="as-l">Cost</span><span class="as-v">$0.0005</span></div>
+            <div class="as-item"><span class="as-l">Decision ID</span><span class="as-v mono">dec_8f3a9c2b</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Usage Dashboard -->
+      <div class="api-usage">
+        <h3 class="sec-title">API Usage (This Month)</h3>
+        <div class="usage-row">
+          <div class="usage-card">
+            <div class="usage-val">12,847</div>
+            <div class="usage-lbl">Total Decisions</div>
+            <div class="usage-bar"><div class="usage-fill" style="width:64%"></div></div>
+            <div class="usage-sub">64% of 20K monthly limit</div>
+          </div>
+          <div class="usage-card">
+            <div class="usage-val">$6.42</div>
+            <div class="usage-lbl">Total Cost</div>
+            <div class="usage-sub">Avg $0.0005/decision</div>
+          </div>
+          <div class="usage-card">
+            <div class="usage-val">38ms</div>
+            <div class="usage-lbl">Avg Latency</div>
+            <div class="usage-sub">P95: 67ms · P99: 94ms</div>
+          </div>
+          <div class="usage-card">
+            <div class="usage-val">94.2%</div>
+            <div class="usage-lbl">Accuracy Rate</div>
+            <div class="usage-sub">Based on user feedback</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- ═══ ECOSYSTEM VIEW ═══ -->
+  <main id="v-ecosystem" class="view">
+    <div class="container">
+      <div class="page-hdr">
+        <div>
+          <h2>🌐 Skill Ecosystem</h2>
+          <p class="sub">Discover, share, and version community-contributed Skills</p>
+        </div>
+        <div class="eco-actions">
+          <button class="btn-o" id="publish-btn">📤 Publish a Skill</button>
+          <div class="search-box">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.5"/><path d="M11 11l3.5 3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            <input type="text" id="eco-search" placeholder="Search skills..."/>
+          </div>
+        </div>
+      </div>
+
+      <!-- Categories -->
+      <div class="eco-cats">
+        <button class="cat-btn on" data-cat="all">All</button>
+        <button class="cat-btn" data-cat="code">💻 Code</button>
+        <button class="cat-btn" data-cat="writing">✍️ Writing</button>
+        <button class="cat-btn" data-cat="data">📊 Data</button>
+        <button class="cat-btn" data-cat="ops">⚙️ DevOps</button>
+        <button class="cat-btn" data-cat="pm">📋 PM</button>
+      </div>
+
+      <!-- Skill Templates Row -->
+      <h3 class="sec-title">Featured Templates</h3>
+      <div class="template-row" id="template-row">
+        <!-- Populated by JS -->
+      </div>
+
+      <!-- Community Skills -->
+      <h3 class="sec-title">Community Skills <span class="count" id="community-count">0</span></h3>
+      <div class="eco-grid" id="eco-grid">
+        <!-- Populated by JS -->
+      </div>
+
+      <!-- Skill Version History Modal -->
+      <div class="version-panel" id="version-panel" style="display:none">
+        <div class="vp-hdr">
+          <h4 id="vp-title">Version History</h4>
+          <button class="btn-g vp-close" id="vp-close">✕</button>
+        </div>
+        <div class="vp-body" id="vp-body">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- ═══ DECISION JOURNAL VIEW ═══ -->
+  <main id="v-journal" class="view">
+    <div class="container">
+      <div class="page-hdr">
+        <div>
+          <h2>📓 Decision Journal</h2>
+          <p class="sub">Transparent log of every ICR routing decision — building trust through visibility</p>
+        </div>
+        <div class="date-picker">Last 30 Days ▾</div>
+      </div>
+
+      <!-- Token Budget Mode -->
+      <div class="budget-panel">
+        <div class="bp-header">
+          <div class="bp-icon">💰</div>
+          <div class="bp-info">
+            <h4>Token Budget Mode</h4>
+            <p>Monthly budget: <strong id="budget-total">500,000</strong> tokens</p>
+          </div>
+          <div class="bp-toggle">
+            <label class="toggle">
+              <input type="checkbox" id="budget-toggle" checked/>
+              <span class="toggle-slider"></span>
+            </label>
+            <span class="toggle-label">Active</span>
+          </div>
+        </div>
+        <div class="bp-meter">
+          <div class="bp-track">
+            <div class="bp-fill" id="bp-fill" style="width:62%"></div>
+            <div class="bp-marker" style="left:62%">
+              <span class="bp-marker-label">Day 19 of 30</span>
+            </div>
+          </div>
+          <div class="bp-labels">
+            <span>0</span>
+            <span id="bp-used">310,000 used</span>
+            <span>500,000</span>
+          </div>
+        </div>
+        <div class="bp-insight">
+          <div class="bp-insight-item">
+            <span class="bpi-val green">190,000</span>
+            <span class="bpi-lbl">Remaining</span>
+          </div>
+          <div class="bp-insight-item">
+            <span class="bpi-val">17,273</span>
+            <span class="bpi-lbl">Daily Budget Left</span>
+          </div>
+          <div class="bp-insight-item">
+            <span class="bpi-val amber">Moderate</span>
+            <span class="bpi-lbl">Spend Pace</span>
+          </div>
+          <div class="bp-insight-item">
+            <span class="bpi-val green">On Track</span>
+            <span class="bpi-lbl">Budget Forecast</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Journal Summary -->
+      <div class="journal-summary">
+        <div class="js-stat">
+          <div class="js-val">147</div>
+          <div class="js-lbl">Total Routing Decisions</div>
+        </div>
+        <div class="js-stat">
+          <div class="js-val green">78%</div>
+          <div class="js-lbl">Acceptance Rate</div>
+        </div>
+        <div class="js-stat">
+          <div class="js-val">14,400</div>
+          <div class="js-lbl">Tokens Saved</div>
+        </div>
+        <div class="js-stat">
+          <div class="js-val">~$4.32</div>
+          <div class="js-lbl">Cost Saved</div>
+        </div>
+      </div>
+
+      <!-- Decision Log Table -->
+      <h3 class="sec-title">Routing Decision Log</h3>
+      <div class="journal-table-wrap">
+        <table class="journal-table">
+          <thead>
+            <tr>
+              <th>Time</th>
+              <th>Intent</th>
+              <th>ICR Recommended</th>
+              <th>User Chose</th>
+              <th>Outcome</th>
+              <th>Tokens</th>
+              <th>Signal</th>
+            </tr>
+          </thead>
+          <tbody id="journal-body">
+            <!-- Populated by JS -->
+          </tbody>
+        </table>
+      </div>
+
+      <!-- What If Preview -->
+      <div class="whatif-section">
+        <h3 class="sec-title">🔮 "What If" Preview</h3>
+        <p class="sub" style="margin-bottom:14px">Enter a prompt to preview how each capability would handle it — before committing.</p>
+        <div class="whatif-input">
+          <input type="text" id="whatif-inp" placeholder="e.g. Review this API endpoint for security issues..."/>
+          <button class="btn-p" id="whatif-go">Preview</button>
+        </div>
+        <div class="whatif-results" id="whatif-results" style="display:none">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

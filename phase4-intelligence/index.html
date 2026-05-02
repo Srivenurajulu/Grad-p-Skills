@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>ICR Phase 4 — Intelligence & Team</title>
+  <meta name="description" content="Phase 4: Skill Health Monitor, Team Analytics, and Adaptive Learning Loop."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+  <header id="hdr">
+    <div class="hdr-l">
+      <svg class="logo" width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5"/><path d="M8 12 L11 15 L16 9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span class="hdr-t">Claude <b>ICR</b></span>
+      <span class="badge">Phase 4 · Intelligence</span>
+    </div>
+    <nav class="tabs">
+      <button class="tab on" data-v="chat">💬 Chat</button>
+      <button class="tab" data-v="health">🩺 Skill Health</button>
+      <button class="tab" data-v="team">👥 Team Analytics</button>
+      <button class="tab" data-v="learning">🧠 Learning Loop</button>
+    </nav>
+    <div class="hdr-r">
+      <div class="team-badge">Team Plan</div>
+    </div>
+  </header>
+
+  <!-- ═══ CHAT VIEW ═══ -->
+  <main id="v-chat" class="view on">
+    <aside id="sidebar">
+      <div class="sb-s">
+        <h3 class="sb-h">ICR Engine</h3>
+        <div class="eng"><span class="d on"></span>Intent Analyzer<span class="etag on">Live</span></div>
+        <div class="eng"><span class="d on"></span>Cost Predictor<span class="etag on">Live</span></div>
+        <div class="eng"><span class="d on"></span>Auto-Scaffolder<span class="etag on">Live</span></div>
+        <div class="eng"><span class="d on"></span>Health Monitor<span class="etag new">New</span></div>
+        <div class="eng"><span class="d on"></span>Learning Loop<span class="etag new">Active</span></div>
+      </div>
+      <div class="sb-s">
+        <h3 class="sb-h">Skills Library <span class="count" id="skill-count">5</span></h3>
+        <div id="skills-sidebar"></div>
+      </div>
+      <div class="sb-s">
+        <h3 class="sb-h">Feedback Loop</h3>
+        <div id="feedback-sidebar">
+           <div class="fb-stat"><span class="fb-v green" id="fb-acc">0</span> <small>Accepts</small></div>
+           <div class="fb-stat"><span class="fb-v red" id="fb-rej">0</span> <small>Rejects</small></div>
+           <div class="fb-stat"><span class="fb-v amber" id="fb-ovr">0</span> <small>Overrides</small></div>
+        </div>
+        <p class="sb-hint">Interactions train the router</p>
+      </div>
+      <div class="sb-s">
+        <h3 class="sb-h">Routing Log</h3>
+        <div id="rlog"><p class="muted">No routing decisions yet.</p></div>
+      </div>
+    </aside>
+    <section id="chat">
+      <div id="msgs">
+        <div class="msg sys"><div class="mb">
+          <p>🧠 <strong>ICR Phase 4 — Intelligence & Teams</strong></p>
+          <p>This phase introduces the Adaptive Learning Loop and Skill Health monitoring.</p>
+          <p class="hint">Every action you take (Accept, Dismiss, Override) generates a training signal that refines the ICR's confidence scores over time.</p>
+          <p class="hint">Try: <em>"Review this code for security"</em></p>
+        </div></div>
+      </div>
+      <div id="iarea">
+        <div id="ibox">
+          <textarea id="inp" rows="1" placeholder="Type a message..."></textarea>
+          <button id="send"><svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M3 10L17 3L10 17L9 11L3 10Z" fill="currentColor"/></svg></button>
+        </div>
+        <div id="ibar" class="hidden"></div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ═══ SKILL HEALTH VIEW ═══ -->
+  <main id="v-health" class="view">
+    <div class="container">
+      <div class="page-hdr">
+        <div><h2>🩺 Skill Health Monitor</h2><p class="sub">Weekly scan detecting stale, conflicting, redundant, and low-effectiveness Skills</p></div>
+        <button class="btn-p" id="run-scan">↻ Run Scan Now</button>
+      </div>
+      
+      <div class="health-summary">
+        <div class="hs-stat"><div class="hs-val">5</div><div class="hs-lbl">Total Skills</div></div>
+        <div class="hs-stat"><div class="hs-val red">1</div><div class="hs-lbl">Action Required</div></div>
+        <div class="hs-stat"><div class="hs-val amber">2</div><div class="hs-lbl">Needs Attention</div></div>
+        <div class="hs-stat"><div class="hs-val green">94%</div><div class="hs-lbl">Overall Health</div></div>
+      </div>
+
+      <h3 class="sec-title">Health Report Recommendations</h3>
+      <div class="health-grid" id="health-grid">
+        <!-- Conflicting -->
+        <div class="hc-card conflict">
+          <div class="hc-hdr">
+            <span class="hc-badge">CONFLICTING</span>
+            <span class="hc-date">Detected 2d ago</span>
+          </div>
+          <h4>"PR Description Writer" vs "Release Notes Writer"</h4>
+          <p class="hc-desc">These two skills have 85% overlapping instructions and keywords. Users frequently invoke the wrong one.</p>
+          <div class="hc-action">
+            <span>Suggestion: Merge into "Release Management Writer"</span>
+            <div class="hc-btns"><button class="btn-s">Merge Skills</button><button class="btn-g">Ignore</button></div>
+          </div>
+        </div>
+
+        <!-- Stale -->
+        <div class="hc-card stale">
+          <div class="hc-hdr">
+            <span class="hc-badge">STALE</span>
+            <span class="hc-date">Not used in 42 days</span>
+          </div>
+          <h4>"Legacy API Doc Writer"</h4>
+          <p class="hc-desc">Skill hasn't been invoked since the team switched to the new OpenAPI auto-generation tool.</p>
+          <div class="hc-action">
+            <span>Suggestion: Archive skill</span>
+            <div class="hc-btns"><button class="btn-s">Archive</button><button class="btn-g">Keep Active</button></div>
+          </div>
+        </div>
+
+        <!-- Low Effectiveness -->
+        <div class="hc-card loweff">
+          <div class="hc-hdr">
+            <span class="hc-badge">LOW EFFECTIVENESS</span>
+            <span class="hc-date">High edit rate (68%)</span>
+          </div>
+          <h4>"Email Drafter"</h4>
+          <p class="hc-desc">Users consistently edit the output of this skill after generation, indicating the tone constraint is too formal.</p>
+          <div class="hc-action">
+            <span>Suggestion: Refine prompt instructions</span>
+            <div class="hc-btns"><button class="btn-s">Edit Skill</button><button class="btn-g">Ignore</button></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- ═══ TEAM ANALYTICS VIEW ═══ -->
+  <main id="v-team" class="view">
+    <div class="container">
+      <div class="page-hdr">
+        <div><h2>👥 Team Analytics</h2><p class="sub">Insights into how your organization uses Claude Skills</p></div>
+        <div class="date-picker">Last 30 Days ▾</div>
+      </div>
+
+      <div class="kpi-row">
+        <div class="kpi primary"><div class="kpi-l">Team Skill Adoption</div><div class="kpi-v">48%</div><div class="kpi-t">Target: 40%+ <span class="pass">✓ PASS</span></div><div class="kpi-b"><div class="kpi-f" style="width:48%"></div></div></div>
+        <div class="kpi"><div class="kpi-l">Tokens Saved (Team)</div><div class="kpi-v">1.2M</div><div class="kpi-t">Estimated ROI: $360</div><div class="kpi-b"><div class="kpi-f green" style="width:80%"></div></div></div>
+        <div class="kpi"><div class="kpi-l">Avg Skills per User</div><div class="kpi-v">4.2</div><div class="kpi-t">Top quartile: 8.5</div><div class="kpi-b"><div class="kpi-f" style="width:60%"></div></div></div>
+        <div class="kpi"><div class="kpi-l">Simple Prompting Holdouts</div><div class="kpi-v">14%</div><div class="kpi-t">Users with 0 skills used</div><div class="kpi-b"><div class="kpi-f amber" style="width:14%"></div></div></div>
+      </div>
+
+      <div class="metrics-grid">
+        <div class="m-card">
+          <h4>Most Used Team Skills</h4>
+          <table class="t-table">
+            <thead><tr><th>Skill Name</th><th>Uses</th><th>Tokens Saved</th><th>Effectiveness</th></tr></thead>
+            <tbody>
+              <tr><td>📊 Weekly Status Report</td><td>842</td><td class="green">757K</td><td>92%</td></tr>
+              <tr><td>🔒 Security Reviewer</td><td>615</td><td class="green">615K</td><td>88%</td></tr>
+              <tr><td>🔀 PR Description Writer</td><td>430</td><td class="green">344K</td><td>95%</td></tr>
+              <tr><td>📝 API Doc Writer</td><td>212</td><td class="green">296K</td><td>71%</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="m-card">
+          <h4>Usage Modality Split</h4>
+          <div class="modality-chart">
+            <div class="mod-bar"><div class="m-fill skill" style="height:48%"><span>48%<br>Skills</span></div><div class="m-fill simple" style="height:42%"><span>42%<br>Simple</span></div><div class="m-fill agent" style="height:10%"><span>10%<br>Agent</span></div></div>
+            <div class="mod-legend">
+              <div class="ml-i"><span class="ml-dot skill"></span> Skills</div>
+              <div class="ml-i"><span class="ml-dot simple"></span> Simple Prompting</div>
+              <div class="ml-i"><span class="ml-dot agent"></span> Agents/Workflows</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- ═══ LEARNING LOOP VIEW ═══ -->
+  <main id="v-learning" class="view">
+    <div class="container">
+      <div class="page-hdr">
+        <div><h2>🧠 Adaptive Learning Loop</h2><p class="sub">How ICR improves its routing confidence through implicit user signals</p></div>
+        <div class="pill">Model: Haiku 4.5 Router (v2.1)</div>
+      </div>
+
+      <div class="loop-diagram">
+        <div class="ld-step"><div class="ld-i">👤</div><div class="ld-t">User Interaction</div><div class="ld-sub">Accept / Reject / Edit</div></div>
+        <div class="ld-arr">→</div>
+        <div class="ld-step active"><div class="ld-i">📡</div><div class="ld-t">Signal Extraction</div><div class="ld-sub">Weighting & vectors</div></div>
+        <div class="ld-arr">→</div>
+        <div class="ld-step"><div class="ld-i">🗄️</div><div class="ld-t">Aggregated Log</div><div class="ld-sub">Anonymized batch</div></div>
+        <div class="ld-arr">→</div>
+        <div class="ld-step"><div class="ld-i">🧠</div><div class="ld-t">Model Retraining</div><div class="ld-sub">Monthly fine-tuning</div></div>
+      </div>
+
+      <div class="metrics-grid">
+        <div class="m-card">
+          <h4>Recent Training Signals</h4>
+          <div class="sig-feed" id="sig-feed">
+             <div class="sig-item">
+               <div class="sig-icon green">✓</div>
+               <div class="sig-content">
+                 <strong>Positive Signal (+0.5)</strong>
+                 <span>User accepted "Security Reviewer" nudge for query "check code vulnerabilities"</span>
+               </div>
+             </div>
+             <div class="sig-item">
+               <div class="sig-icon red">✕</div>
+               <div class="sig-content">
+                 <strong>Negative Signal (-0.8)</strong>
+                 <span>User dismissed comparison card for "Email Drafter". Downweighting keywords.</span>
+               </div>
+             </div>
+             <div class="sig-item">
+               <div class="sig-icon amber">⤤</div>
+               <div class="sig-content">
+                 <strong>Override Signal (+1.2)</strong>
+                 <span>User selected "Simple Prompt" instead of recommended "API Doc Writer". Strong correction.</span>
+               </div>
+             </div>
+             <div class="sig-item">
+               <div class="sig-icon blue">✎</div>
+               <div class="sig-content">
+                 <strong>Quality Signal (-0.3)</strong>
+                 <span>User heavily edited output of "Weekly Status Report". Flagged for Health Monitor.</span>
+               </div>
+             </div>
+          </div>
+        </div>
+        <div class="m-card">
+          <h4>Router Accuracy Over Time</h4>
+          <canvas id="accuracy-chart" height="220"></canvas>
+          <div class="chart-caption">Intent classification accuracy increased from 75% to 91% since Phase 1.</div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
