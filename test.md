@@ -99,11 +99,3 @@ Click each sidebar item and verify the correct view loads:
 | Mobile browsers | ⚠️ Not optimized (desktop-first design) |
 
 ---
-
-## 9. PPT Generation Test
-
-1. Open [Google Apps Script](https://script.google.com)
-2. Paste contents of `icr_visual_pitch_script.js`
-3. Run `createVisualICRPresentation()`
-4. Verify: 12 slides generated in Google Drive
-5. Check: All text is Times New Roman, size 12, white background
